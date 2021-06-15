@@ -2,8 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using ApprovalTests;
-using ApprovalTests.Reporters;
 using NUnit.Framework;
 
 namespace csharp
@@ -384,10 +382,10 @@ Backstage passes to a TAFKAL80ETC concert, -20, 0
 Backstage passes to a TAFKAL80ETC concert, -25, 0
 Conjured Mana Cake, -27, 0
             ";
+
         [Test]
-        public void ThirtyDays()
+        public void Compare_current_output_to_expected()
         {
-            
             StringBuilder fakeoutput = new StringBuilder();
             Console.SetOut(new StringWriter(fakeoutput));
             Console.SetIn(new StringReader("a\n"));
