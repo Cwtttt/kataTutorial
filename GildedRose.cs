@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿ using System.Collections.Generic;
 
 namespace csharp
 {
@@ -14,68 +14,24 @@ namespace csharp
         {
             for (var i = 0; i < Items.Count; i++)
             {
-                if (IsAgedBrie(Items[i]) || IsBackstagePasses(Items[i]))
+                if (IsSulfuras(Items[i]))
                 {
-                    if (QualityLessThan50(Items[i]))
-                    {
-                        IncreaseQuality(Items[i]);
-
-                        if (IsBackstagePasses(Items[i]))
-                        {
-                            if (Items[i].SellIn < 11 && Items[i].Quality < 50)
-                            {
-                                IncreaseQuality(Items[i]);
-                            }
-
-                            if (Items[i].SellIn < 6 && Items[i].Quality < 50)
-                            {
-                                IncreaseQuality(Items[i]);
-                            }
-                        }
-                    }
                 }
-                else
+                else if (IsGeneric(Items[i]))
                 {
-                    if (Items[i].Quality > 0)
-                    {
-                        if (!IsSulfuras(Items[i]))
-                        {
-                            DecreaseQuality(Items[i]);
-                        }
-                    }
+                    HandleGeneric(Items[i]);
                 }
-
-                if (!IsSulfuras(Items[i]))
+                else if (IsAgedBrie(Items[i]))
                 {
-                    DecreaseSellIn(Items[i]);
+                    HandleAgedBrie(Items[i]);
                 }
-
-                if (Items[i].SellIn < 0)
+                else if (IsBackstagePasses(Items[i]))
                 {
-                    if (IsAgedBrie(Items[i]))
-                    {
-                        if (QualityLessThan50(Items[i]))
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
-                    }
-                    else if (IsBackstagePasses(Items[i]))
-                    {
-                        Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                    }
-                    else
-                    {
-                        if (Items[i].Quality > 0)
-                        {
-                            if (!IsSulfuras(Items[i]))
-                            {
-                                Items[i].Quality = Items[i].Quality - 1;
-                            }
-                        }
-                    }
+                    HandleBackPassQuality(Items[i]);
                 }
             }
         }
+       
 
         private void DecreaseQuality(Item item)
         {
@@ -110,6 +66,70 @@ namespace csharp
         private bool IsSulfuras(Item item)
         {
             return item.Name == "Sulfuras, Hand of Ragnaros";
+        }
+
+        private bool IsGeneric(Item item)
+        {
+            return !(IsAgedBrie(item) || IsBackstagePasses(item) || IsSulfuras(item));
+        }
+        private void HandleGeneric(Item item)
+        {
+            if (item.Quality > 0)
+            {
+                DecreaseQuality(item);
+            }
+
+            DecreaseSellIn(item);
+
+            if (item.SellIn < 0)
+            {
+                if (item.Quality > 0)
+                {
+                    DecreaseQuality(item);
+                }
+            }
+        }
+
+        private void HandleBackPassQuality(Item item)
+        {
+            if (QualityLessThan50(item))
+            {
+                IncreaseQuality(item);
+                if (item.SellIn < 11 && item.Quality < 50)
+                {
+                    IncreaseQuality(item);
+                }
+
+                if (item.SellIn < 6 && item.Quality < 50)
+                {
+                    IncreaseQuality(item);
+                }
+            }
+
+            DecreaseSellIn(item);
+
+            if (item.SellIn < 0)
+            {
+                item.Quality = item.Quality - item.Quality;
+            }
+        }
+
+        private void HandleAgedBrie(Item item)
+        {
+            if (QualityLessThan50(item))
+            {
+                IncreaseQuality(item);
+            }
+
+            DecreaseSellIn(item);
+
+            if (item.SellIn < 0)
+            {
+                if (QualityLessThan50(item))
+                {
+                    IncreaseQuality(item);
+                }
+            }
         }
     }
 }
