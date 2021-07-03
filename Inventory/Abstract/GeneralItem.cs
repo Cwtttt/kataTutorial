@@ -2,13 +2,11 @@
 {
     public abstract class GeneralItem
     {
-        public int SellIn { get; internal set; }
         public Quality Quality{ get; internal set; }
-        public GeneralItem(int itemQuality, int sellIn)
+        public GeneralItem(int itemQuality)
         {
-            SellIn = sellIn;
             Quality = new Quality(itemQuality);
         }
-        public abstract void Update();
+        public abstract void Update(int sellIn);
     }
 }

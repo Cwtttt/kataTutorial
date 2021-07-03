@@ -4,19 +4,17 @@ namespace csharp.Inventory
 {
     public class AgedBrie : GeneralItem
     {
-        public AgedBrie(int itemQuality, int sellIn) 
-            : base(itemQuality, sellIn) { }
+        public AgedBrie(int itemQuality) 
+            : base(itemQuality) { }
 
-        public override void Update()
+        public override void Update(int sellIn)
         {
             if (Quality.LessThan50())
             {
                 Quality.Increase();
             }
 
-            SellIn--;
-
-            if (SellIn < 0)
+            if (sellIn < 0)
             {
                 if (Quality.LessThan50())
                 {

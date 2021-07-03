@@ -4,27 +4,25 @@ namespace csharp.Inventory
 {
     public class BackPass : GeneralItem
     {
-        public BackPass(int itemQuality, int sellIn) 
-            : base(itemQuality, sellIn) { }
-        public override void Update()
+        public BackPass(int itemQuality) 
+            : base(itemQuality) { }
+        public override void Update(int sellIn)
         {
             if (Quality.LessThan50())
             {
                 Quality.Increase();
-                if (SellIn < 11 && Quality.LessThan50())
+                if (sellIn < 10 && Quality.LessThan50())
                 {
                     Quality.Increase();
                 }
 
-                if (SellIn < 6 && Quality.LessThan50())
+                if (sellIn < 5 && Quality.LessThan50())
                 {
                     Quality.Increase();
                 }
             }
 
-            SellIn--;
-
-            if (SellIn < 0)
+            if (sellIn < 0)
             {
                 Quality.Reset();
             }

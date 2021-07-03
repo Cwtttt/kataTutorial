@@ -1,0 +1,1 @@
+{"TestProjects":["csharp"],"IgnoredProjects":[],"ProjectMappings":[],"Filter":{"FilterItems":[{"Resource":"GildedRose.cs","Effect":"Deny"}]},"NumberOfTestRunInstances":3,"MaxTestTimeMin":5,"TestRunner":"DotNet","Mutators":["ConditionalBoundary","NegateCondtional","Math","NegateTypeCompability","Increment","ReturnValue","MethodCall"],"CreateBaseline":true}

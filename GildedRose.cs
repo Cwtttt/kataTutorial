@@ -16,26 +16,21 @@ namespace csharp
         {
             public GeneralItem BuildFor(Item item)
             {
-                if (IsSulfuras(item))
+                if (IsGeneric(item))
                 {
-                    return new Sulfuras(item.Quality, item.SellIn);
-
-                }
-                else if (IsGeneric(item))
-                {
-                    return new Generic(item.Quality, item.SellIn);
+                    return new Generic(item.Quality);
 
                 }
                 else if (IsAgedBrie(item))
                 {
-                    return new AgedBrie(item.Quality, item.SellIn);
+                    return new AgedBrie(item.Quality);
                 }
                 else if (IsBackstagePasses(item))
                 {
-                    return new BackPass(item.Quality, item.SellIn);
+                    return new BackPass(item.Quality);
                 }
 
-                return new Generic(item.Quality, item.SellIn);
+                return new Generic(item.Quality);
             }
 
             private bool IsAgedBrie(Item item)
@@ -48,14 +43,9 @@ namespace csharp
                 return item.Name == "Backstage passes to a TAFKAL80ETC concert";
             }
 
-            private bool IsSulfuras(Item item)
-            {
-                return item.Name == "Sulfuras, Hand of Ragnaros";
-            }
-
             private bool IsGeneric(Item item)
             {
-                return !(IsAgedBrie(item) || IsBackstagePasses(item) || IsSulfuras(item));
+                return !(IsAgedBrie(item) || IsBackstagePasses(item));
             }
         }
 
@@ -63,11 +53,17 @@ namespace csharp
         {
             foreach(var item in Items)
             {
+                if (IsSulfuras(item)) continue;
+                item.SellIn--;
                 var good = new GoodCategory().BuildFor(item);
-                good.Update();
-                item.SellIn = good.SellIn;
+                good.Update(item.SellIn);
                 item.Quality = good.Quality.Amount;
             }
+        }
+
+        private bool IsSulfuras(Item item)
+        {
+            return item.Name == "Sulfuras, Hand of Ragnaros";
         }
     }
 }
